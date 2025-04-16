@@ -22,6 +22,7 @@ More infos in:
    ```
    docker compose up -d
    ```
+
    This command will:
    - Pull postgreSQL and pgAdmin images from dockerhub
    - Create and start the containers in detached mode (without use your terminal).
@@ -50,5 +51,12 @@ More infos in:
    ```
    docker compose down
    ```
+
 ### OBS:
 I recommend installing the docker extension in vscode for easier container management than command line.
+
+
+![Screenshot from 2025-04-16 22-55-58](https://github.com/user-attachments/assets/260c3055-bc10-4da2-87d6-f6a0136317c9)
+![Screenshot from 2025-04-16 22-55-51](https://github.com/user-attachments/assets/4736171a-1f4f-4cc1-bfb0-f8c41c2f1301)
+![Screenshot from 2025-04-16 22-55-29](https://github.com/user-attachments/assets/17d70b9a-91e7-457b-a507-4847e6f913ff)
+![Screenshot from 2025-04-16 22-55-14](https://github.com/user-attachments/assets/8df0bb36-2b01-4555-a3c6-7cd299b63e7c)
