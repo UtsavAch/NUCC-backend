@@ -1,0 +1,91 @@
+DB
+	News
+		-id: varchar(32) -> PK NOT NULL
+		-title: varchar(128) NOT NULL
+		-img: imgURL	NOT NULL
+		-about_text: text	NULLABLE
+		-date: datetime	NOT NULL
+		-active: bool	NOT NULL
+	Campaigns
+		-id: varchar(32) -> PK NOT NULL
+		-title: varchar(128) NOT NULL
+		-about_text: text NOT NULL
+		-img: imgURL NULLABLE
+		-target_value: double NOT NULL
+		-current_value: double NOT NULL
+		-date: datetime NOT NULL
+		-limit_date: datetime NULLABLE
+		-active: bool NOT NULL
+	Users
+		-username: varchar(64) -> PK NOT NULL
+		-password: varchar(64) NOT NULL
+		-email: var	char(128) NOT NULL
+	Cards
+		-nif: int -> PK NOT NULL
+		-name: varchar(128) NOT NULL
+		-email: varchar(128) NOT NULL
+		-birthday: datetime NOT NULL
+		...
+	Newsletter
+		-email: varchar(128) -> PK NOT NULL
+		-date_of_deletion: datetime NULLABLE
+	Donation
+		-id: varchar(32) -> PK NOT NULL
+		-nif: int NOT NULL
+		-camp_id: varchar(32) -> FK NOT NULL
+		-amount: double NOT NULL
+		
+
+Server
+	Endpoints:
+		News:
+			getAllNews() 		-> [{news}]
+			-> asc: date
+			getAllActiveNews()  -> [{news}]
+			-> asc: date; filtered_by: active
+			getNews(id)			-> {news}
+			removeNews(id)		-> bool
+			updateNews(id, news)	-> bool
+			addNews(news)		-> bool
+		Campaigns:
+			getAllCampaigns()	-> [{camp}]
+			-> asc: date
+			getAllActiveCapaigns -> [{camp}] -> asc: date; filtered_by: active
+			getCampaign(id)		-> {camp}
+			removeCampaign(id)  -> bool
+			deactivateCampaign(id) 	-> bool
+			updateCampaign(id, camp) 	-> bool
+			addCampaign(camp)		-> bool
+		Login:
+			login(username, password)	-> bool
+			login2FA(code)			-> bool
+		Donations:
+			donate(camp_id, nif, amount)	-> bool
+		Newsletter:
+			subscribe(email) -> bool
+			unsubscribe(email) -> bool
+	Internal:
+		Newsletter:
+			softDeletion():
+				1. triggered daily
+				2. filters emails with date_of_deletion <= today || date_of_deletion != null
+				3. delete those instances from DB
+			sendNewsletter():
+				1. triggered by the creation of News.
+				2. sends emails with the news to the registered emails addresses.
+				3. or send periodicaly the lastUpdates.
+		Login:
+			tryLogin(username, password) -> bool
+				1. verify username and password.
+				2. if it's correct, generate a 2FA code and save it in memory for 5 min.
+				3. send 2FA code to email.
+				4. after 5 min, delete the code and delete any coming login2FA requests for that user. (maybe save the code in the BD? Somewhere else sounds better)
+				5. Once it's used, the code stops working, so two ppl can't use the same code.
+			
+Client:
+	Login:
+		timeout():
+			1. if they try login in 5 times and fail, give a time out.
+			2. this is saved in cache, so it's better to have something like this implemented in the server also, to avoid brute force hacking
+		
+			

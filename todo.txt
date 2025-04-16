@@ -1,0 +1,4 @@
+-Implement other services like campaigns, newsletters, etc.
+-Optimize database/schema
+-Implement other endpoints in server.js
+-Implement docker
