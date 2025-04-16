@@ -1,0 +1,17 @@
+Alguns pontos:
+
+- Nome de tabelas com lower case é uma boa prática. Não é errado (acredito que existam poucas query engines case sensitive),
+mas é mais fácil para escrever queries longas, além de ser standard.
+
+- Adicionei NUMERIC(10,2) para guardar valores, e não acho que vá causar problemas no projeto. Mas sempre bom lembrar
+que erros de arredondamento existem. É uma possibilidade guardar valores inteiros (cents), e converter para currency no front.
+
+- Adicionar hash na senha do usuário.
+
+- muitos indices podem atrasar a escrita
+
+- Não commitar .env. Adicionar no .gitignore (retroativo não funciona, alguém adicionou um .env com valores). Podemos
+compartilhar .env entre nós usando privatebin https://privatebin.info/
+
+- Não coloquei os indices na tabela por motivos de: indices deixam uma pesquisa mais rápida, mas deixa a escrita mais lenta.
+Como são tabelas pequenas, talvez não precisemos dos indices.
