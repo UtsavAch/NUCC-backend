@@ -11,9 +11,9 @@ DROP TABLE IF EXISTS Donation CASCADE;
 
 -- News table
 CREATE TABLE News (
-    id VARCHAR(32) PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(128) NOT NULL,
-    img VARCHAR(255) NOT NULL,
+    img VARCHAR(255),
     about_text TEXT,
     date TIMESTAMP NOT NULL,
     active BOOLEAN NOT NULL
@@ -21,7 +21,7 @@ CREATE TABLE News (
 
 -- Campaigns table
 CREATE TABLE Campaigns (
-    id VARCHAR(32) PRIMARY KEY,
+    id UUID PRIMARY KEY,
     title VARCHAR(128) NOT NULL,
     about_text TEXT NOT NULL,
     img VARCHAR(255),
