@@ -1,10 +1,9 @@
 How to run the application
 
 1. Install all dependencies in backend
-2. Install all dependencies in frontend
-3. Put the db path/url in .env (.env should be inside backend directory)
-   - DB_URL=postgres://<user>:<password>@db:5432/<projectDB>
-4. Go to frontend and run the command:- npm run dev
+2. Put the db path/url in .env (.env should be inside backend directory)
+   - DB_URL=postgres://<-user->:<-password->@db:5432/<-projectDB->
+3. Go to backend directory and run the command:- npm run dev
 
 ## Docker Setup (PostgreSQL + pgAdmin)
 
