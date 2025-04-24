@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const { ServiceBroker } = require("moleculer");
 const path = require("path");
-require("dotenv").config();
+require("dotenv").config({
+  path: require("path").resolve(__dirname, "../.env"),
+});
 
 const app = express();
 app.use(express.json());
@@ -16,9 +18,7 @@ const broker = new ServiceBroker({
 });
 
 // Load user service
-broker.loadService(
-  path.join(__dirname, "../backend/services/users.service.js")
-);
+broker.loadService(path.join(__dirname, "./services/users.service.js"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

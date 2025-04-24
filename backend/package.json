@@ -3,16 +3,22 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "moleculer": "moleculer-runner --repl --hot services/**/*.service.js -e",
     "start": "moleculer-runner",
-    "cli": "moleculer connect"
+    "cli": "moleculer connect",
+    "server": "cd src && node server.js",
+    "backend": "npm run moleculer --silent",
+    "dev": "concurrently \"npm run server\" \"npm run backend\""
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "moleculer": "^0.14.35",
     "moleculer-db": "^0.8.28",
     "moleculer-db-adapter-sequelize": "^0.2.19",
@@ -20,5 +26,8 @@
     "path": "^0.12.7",
     "pg": "^8.14.1",
     "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
