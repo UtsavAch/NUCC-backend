@@ -1,5 +1,5 @@
-CREATE SCHEMA IF NOT EXISTS project_db;
-SET search_path TO project_db;
+-- CREATE SCHEMA IF NOT EXISTS project_db;
+-- SET search_path TO project_db;
 
 -- Drop existing tables
 DROP TABLE IF EXISTS News CASCADE;

@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS project_db;
+SET search_path TO project_db;
+
 -- News table
 DROP TABLE IF EXISTS news CASCADE;
 CREATE TABLE IF NOT EXISTS news (
