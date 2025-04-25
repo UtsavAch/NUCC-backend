@@ -19,6 +19,7 @@ function UsersModel(sequelize) {
       },
     },
     {
+      // schema: "project_db",
       tableName: "users",
       timestamps: false,
     }

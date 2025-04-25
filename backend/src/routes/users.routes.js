@@ -1,7 +1,7 @@
 const express = require("express");
+const router = express.Router();
 
 module.exports = (broker) => {
-  const router = express.Router();
   const controller = require("../controllers/users.controller")(broker);
 
   router.post("/register", controller.register);

@@ -1,43 +1,38 @@
 const { MoleculerError } = require("moleculer").Errors;
-const DbService = require("moleculer-db");
-const SequelizeAdapter = require("moleculer-db-adapter-sequelize");
-const { Users } = require("../database/index");
+const UsersRepository = require("../repositories/users.repository");
 const { hashPassword, comparePassword } = require("../helpers/password.helper");
-const Sequelize = require("sequelize");
 
 module.exports = {
   name: "users",
-  mixins: [DbService],
-  adapter: new SequelizeAdapter(process.env.DB_URL),
-  model: Users,
-
   actions: {
+    // Register
     async create(ctx) {
       const { username, email, password } = ctx.params;
+      const repo = new UsersRepository();
 
+      // Validation (may be we can put it in validators)
       if (!username || !email || !password)
-        throw new MoleculerError("Missing required fields", 400);
+        throw new MoleculerError("Missing fields", 400);
       if (password.length < 6)
-        throw new MoleculerError("Password too short (min 6 chars)", 400);
+        throw new MoleculerError("Password too short", 400);
 
-      const exists = await this.adapter.model.findOne({
-        where: {
-          [Sequelize.Op.or]: [{ username }, { email }],
-        },
-      });
+      // Check existing user
+      const existsUsername = await repo.findByUsername(username);
+      const existsEmail = await repo.findByEmail(email);
+      if (existsUsername || existsEmail)
+        throw new MoleculerError("Username and/or email already exists", 400);
 
-      if (exists)
-        throw new MoleculerError("Username or email already exists", 400);
-
+      // Hash password & create
       const hashed = await hashPassword(password);
-
-      return this.adapter.model.create({ username, email, password: hashed });
+      return repo.create({ username, email, password: hashed });
     },
 
+    // Login
     async login(ctx) {
       const { username, password } = ctx.params;
+      const repo = new UsersRepository();
 
-      const user = await this.adapter.model.findOne({ where: { username } });
+      const user = await repo.findByUsername(username);
       if (!user) throw new MoleculerError("User not found", 404);
 
       const isValid = await comparePassword(password, user.password);
@@ -47,37 +42,32 @@ module.exports = {
     },
 
     async get(ctx) {
-      const user = await this.adapter.model.findOne({
-        where: { username: ctx.params.username },
-      });
+      const repo = new UsersRepository();
+      const user = await repo.findByUsername(ctx.params.username);
       if (!user) throw new MoleculerError("User not found", 404);
       return user;
     },
 
     async list() {
-      return this.adapter.model.findAll();
+      const repo = new UsersRepository();
+      const users = await repo.list();
+      if (!users) throw new MoleculerError("Failed to retrieve users", 500);
+      return users;
     },
 
     async update(ctx) {
-      const user = await this.adapter.model.findOne({
-        where: { username: ctx.params.username },
-      });
-      if (!user) throw new MoleculerError("User not found", 404);
-
+      const repo = new UsersRepository();
       const updates = {};
       if (ctx.params.email) updates.email = ctx.params.email;
       if (ctx.params.password)
         updates.password = await hashPassword(ctx.params.password);
 
-      return user.update(updates);
+      return repo.update(ctx.params.username, updates);
     },
 
     async remove(ctx) {
-      const user = await this.adapter.model.findOne({
-        where: { username: ctx.params.username },
-      });
-      if (!user) throw new MoleculerError("User not found", 404);
-      await user.destroy();
+      const repo = new UsersRepository();
+      await repo.delete(ctx.params.username);
       return { success: true };
     },
   },

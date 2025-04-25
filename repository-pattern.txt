@@ -1,0 +1,6 @@
+How repository pattern works?
+repositories interact with database
+services interact with repositories
+controllers interact with services
+we use controllers methods in routes
+ 

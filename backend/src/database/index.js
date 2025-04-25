@@ -7,8 +7,4 @@ const sequelize = new Sequelize(process.env.DB_URL, {
 });
 
 const Users = UsersModel(sequelize);
-
-module.exports = {
-  sequelize,
-  Users,
-};
+module.exports = { sequelize, Users };
